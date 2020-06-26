@@ -84,8 +84,9 @@ def clean_cols(df):
     df['UDP'] = np.where(UDP, 1, 0)
     
     # Drop unnecessary columns
-    df.drop(columns=['Flow_ID', 'Source_IP', 'Source_Port', 'Destination_IP',
-                     'Destination_Port', 'Protocol', 'Timestamp'], inplace=True)
+    df.drop(columns=['Source_IP', 'Source_Port', 'Destination_IP',
+                     'Destination_Port', 'Protocol', 'Timestamp'],
+            inplace=True)
     
     # Applies only to fully benign dataset:
     # Create target column Malicious and drop unnecessary columns
