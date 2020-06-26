@@ -1,2 +1,2 @@
 # cyberattack-detection-project
-Project attempting to analyze and detect malicious information packets.
+Analysis of information flows, model attempting to detect DDOS & Botnet activity.
