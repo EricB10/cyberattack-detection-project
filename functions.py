@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
+import sqlalchemy
 
-
-
+import os
+from datetime import datetime
 
 
 def clean_cols(df):
@@ -104,4 +105,35 @@ def clean_cols(df):
         df['Label'] = np.where(filt, 'Benign_Unknown', df['Label'])
         df.drop(columns=['SimillarHTTP', 'Inbound'], axis=1, inplace=True)
     
+    return df
+
+
+def load_balanced_df(sample_size=1000):
+    '''
+    Function to load in balanced dataframe from cleaned CSVs.
+    
+    Parameters:
+        sample_size : int, number of rows to read in for each of the 18 attacks
+                      in addition to 18 * this amount of benign data flows.
+                      Default value is 1000.
+    '''
+    df = pd.read_csv('Datasets/Cleaned/clean_benign.csv', index_col=0, nrows=(18*sample_size))
+    print(datetime.now().time(), 'Benign Database Shape: ', df.shape, '\n')
+
+    for file in os.listdir('Datasets/Cleaned/'):
+        if file[0] == '.':
+            print('Dot File\n')
+            pass
+        elif file == 'clean_benign.csv':
+            print(file, '\n')
+            pass
+        else:
+            temp_df = pd.read_csv(f'Datasets/Cleaned/{file}', index_col=0, nrows=sample_size)
+            print(datetime.now().time(), '-', file)
+            print('Shape: ', temp_df.shape, '\n')
+            df = pd.concat([df, temp_df])
+            del temp_df
+
+    df.reset_index(drop=True, inplace=True)
+    print('Combined Database Shape: ', df.shape)
     return df
