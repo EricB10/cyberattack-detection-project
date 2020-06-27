@@ -117,23 +117,21 @@ def load_balanced_df(sample_size=1000):
                       in addition to 18 * this amount of benign data flows.
                       Default value is 1000.
     '''
+    
+    # Read in benign dataset, nrows = 18 * sample size
     df = pd.read_csv('Datasets/Cleaned/clean_benign.csv', index_col=0, nrows=(18*sample_size))
-    print(datetime.now().time(), 'Benign Database Shape: ', df.shape, '\n')
-
+    
+    # Add a sample of each attack dataset, nrows = sample size
     for file in os.listdir('Datasets/Cleaned/'):
         if file[0] == '.':
-            print('Dot File\n')
             pass
         elif file == 'clean_benign.csv':
-            print(file, '\n')
             pass
         else:
             temp_df = pd.read_csv(f'Datasets/Cleaned/{file}', index_col=0, nrows=sample_size)
-            print(datetime.now().time(), '-', file)
-            print('Shape: ', temp_df.shape, '\n')
             df = pd.concat([df, temp_df])
             del temp_df
 
+    # Reset index
     df.reset_index(drop=True, inplace=True)
-    print('Combined Database Shape: ', df.shape)
     return df
