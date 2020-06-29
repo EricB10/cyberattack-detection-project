@@ -6,6 +6,9 @@ import os
 from datetime import datetime
 
 
+
+
+
 def clean_cols(df):
     '''
     Function to clean and normalize column names.
@@ -108,27 +111,30 @@ def clean_cols(df):
     return df
 
 
+
+
+
 def load_balanced_df(sample_size=1000):
     '''
     Function to load in balanced dataframe from cleaned CSVs.
     
     Parameters:
         sample_size : int, number of rows to read in for each of the 18 attacks
-                      in addition to 18 * this amount of benign data flows.
+                      in addition to 11 * this amount of benign data flows.
                       Default value is 1000.
     '''
     
-    # Read in benign dataset, nrows = 18 * sample size
-    df = pd.read_csv('Datasets/Cleaned/clean_benign.csv', index_col=0, nrows=(18*sample_size))
+    # Read in benign dataset, nrows = 11 * sample size
+    df = pd.read_csv('Datasets/Final/final_Benign.csv', index_col=0, nrows=(11*sample_size))
     
-    # Add a sample of each attack dataset, nrows = sample size
-    for file in os.listdir('Datasets/Cleaned/'):
-        if file[0] == '.':
+    # Add a sample of each of 11 attack datasets, nrows = sample size
+    for file in os.listdir('Datasets/Final/'):
+        if file[0:5] != 'final':
             pass
-        elif file == 'clean_benign.csv':
+        elif file == 'final_Benign.csv':
             pass
         else:
-            temp_df = pd.read_csv(f'Datasets/Cleaned/{file}', index_col=0, nrows=sample_size)
+            temp_df = pd.read_csv(f'Datasets/Final/{file}', index_col=0, nrows=sample_size)
             df = pd.concat([df, temp_df])
             del temp_df
 
