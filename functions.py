@@ -114,7 +114,54 @@ def clean_cols(df):
 
 
 
-def load_balanced_df(sample_size=1000):
+def load_balanced_df(directory='Final', sample_size=1000):
+    '''
+    Function to load in balanced dataframe from cleaned CSVs.
+    
+    Parameters:
+        sample_size : int, number of rows to read in for each of the 18 attacks
+                      in addition to 11 * this amount of benign data flows.
+                      Default value is 1000.
+    '''
+    
+    # Size of benign data to load
+    benign_size = 0
+    
+    # Read in benign dataset, nrows = 11 * sample_size
+    df = pd.read_csv(f'Datasets/{directory}/{directory}_Benign.csv', index_col=0, nrows=0)
+    
+    # Read a sample of each of 11 attack datasets, nrows = sample_size
+    for file in os.listdir(f'Datasets/{directory}/'):
+        if file[0] == '.':
+            pass
+        elif file == f'{directory}_Benign.csv':
+            pass
+        else:
+            try:
+                temp_df = pd.read_csv(f'Datasets/{directory}/{file}', index_col=0, nrows=sample_size)
+                if len(temp_df) < sample_size:
+                    benign_size += len(temp_df)
+                else:
+                    benign_size += sample_size
+                df = pd.concat([df, temp_df])
+                del temp_df
+            except:
+                pass
+        
+    # Read a sample of benign database, nrows = benign_size
+    temp_df = pd.read_csv(f'Datasets/{directory}/{directory}_Benign.csv', index_col=0, nrows=benign_size)
+    df = pd.concat([df, temp_df])
+    del temp_df
+    
+    # Reset index
+    df.reset_index(drop=True, inplace=True)
+    return df
+
+
+
+
+
+def load_balanced_df2(sample_size=1000):
     '''
     Function to load in balanced dataframe from cleaned CSVs.
     
@@ -125,13 +172,13 @@ def load_balanced_df(sample_size=1000):
     '''
     
     # Read in benign dataset, nrows = 11 * sample size
-    df = pd.read_csv('Datasets/Final/final_Benign.csv', index_col=0, nrows=(11*sample_size))
+    df = pd.read_csv('Datasets/Final/Final_Benign.csv', index_col=0, nrows=(11*sample_size))
     
     # Add a sample of each of 11 attack datasets, nrows = sample size
     for file in os.listdir('Datasets/Final/'):
-        if file[0:5] != 'final':
+        if file[0:5] != 'Final':
             pass
-        elif file == 'final_Benign.csv':
+        elif file == 'Final_Benign.csv':
             pass
         else:
             temp_df = pd.read_csv(f'Datasets/Final/{file}', index_col=0, nrows=sample_size)
