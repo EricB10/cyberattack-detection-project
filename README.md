@@ -10,22 +10,22 @@
 
 ## Data
 - Started with 19 datasets which were combined into 11 DDoS and 1 Benign dataset of over 70 common websites/services.
-- 11 types of DDoS attacks: DNS, LDAP, MSSQL, NTP, NetBIOS, Portmap, SNMP, SSDP, Syn, TFTP, UDPLag.
+- 11 types of DDoS attacks: DNS, LDAP, MSSQL, NTP, NetBIOS, Portmap, SNMP, SSDP, Syn, TFTP and UDPLag.
 - Over 500,000,000 datapoints combined, each representing one data flow.
 - Target variables:
   - Malicious (Binary Classification).
   - Label (Multiclass Classification).
 - Over 80 features:
-  - Flow duration, down/uptime ratio.
-  - Total forward & backward packets and size.
   - Protocol: TCP, UDP or HOPOPT.
+  - Flow duration, down/uptime ratio.
+  - Time active and idle min, max, mean and std.
+  - Total forward & backward packets and size.
   - Forward and backward packet length min, max, mean and std.
   - Forward and backward header size.
-  - Total, forward and backward bytes/sec and packets/sec rates.
-  - Total, forward and backward interarrival time min, max, mean and std.
+  - Forward and backward bytes/sec and packets/sec rates.
+  - Forward and backward interarrival time min, max, mean and std.
   - Forward and backward PSH and URG flags, total FIN, SYN, RST, ACK, CWE and ECE flags.
   - Forward and backward subflow packets, size.
-  - Time active and idle min, max, mean and std.
   - Forward and backward initial window size.
 
 ## Modeling
@@ -65,9 +65,13 @@
 
 - All data originally created with CICFlowMeter:
   - https://www.unb.ca/cic/research/applications.html#CICFlowMeter
+  
+- Images obtained from WP DIY:
+  - https://wpdoityourself.com/protection-ddos-attacks-wordpress-website/
 
-- DDoS/Cybersecurity statistics obtained from Cybercrime Magazine & Wikipedia:
+- DDoS/Cybersecurity statistics and info obtained from Cybercrime Magazine, Cloudfare & Wikipedia:
   - https://cybersecurityventures.com/the-15-top-ddos-statistics-you-should-know-in-2020/
+  - https://www.cloudflare.com/en-in/learning/ddos/what-is-a-ddos-attack/
   - https://en.wikipedia.org/wiki/Denial-of-service_attack
  
 ## Files 
