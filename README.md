@@ -1,6 +1,6 @@
-# DDoS Analysis & Detection
+# DDoS Attack Detection
 ## Concept
-- Analysis of Benign and DDoS data flows & packets, machine learning models to detect DDoS activity.
+- Analysis of Benign and DDoS Attack dataflows, machine learning models to detect malicious DDoS activity.
 
 ## Process
 - Collect and clean data, normalize columns, drop NA and fix infinite values.
@@ -33,6 +33,10 @@
   50% Benign, 50% Malicious.
 - Multiclass Classification in a balanced dataset:
   50% Benign, 50% divided into 11 DDoS attacks.
+- Binary Classification in an anomaly detection dataset:
+  99% Benign, 1% Malicious
+- Multiclass Classification in an anomaly detection dataset:
+  99% Benign, 1% divided into 11 DDoS attacks.
   
 ## Results
 - Binary Classification in a balanced dataset:
@@ -51,13 +55,21 @@
   - XGBoost: Acc .929, F1 .938
   
 ## Conclusions
-
+- Simple models such as Decision Tree work very well.
+- Given so much information about a dataflow (80+ features) it is easy to detect DDoS Attacks.
+- It is hard to monitor that much information in real time so the following attributes should be monitored:
+  - Min, max and mean packet size of a dataflow.
+  - Mean header size.
+  - Protocol.
 
 ## Future Plans
-- Binary Classification in an anomaly detection dataset:
-  99% Benign, 1% Malicious.
-- Multiclass Classification in an anomaly detection dataset:
-  99% Benign, 1% divided into 11 DDoS attacks.
+- Collect more benign data for dataset of .01% malicious dataflows.
+- Test trained model on real-time data.
+- Build front-end GUI.
+
+![Min Packet Size](Images/Pkt_Length_Min.png)
+![Max Packet Size](Images/Pkt_Length_Max.png)
+![Mean Packet Size](Images/Pkt_Length_Mean.png)
 
 ## Sources
 - DDoS data collected from Canadian Institute for Cybersecurity:
