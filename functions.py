@@ -121,12 +121,66 @@ def clean_cols(df):
 
 
 
-def load_balanced_df(directory='Final', sample_size=1000):
+def load_malicious_df(directory, sample_size=1000):
+    '''
+    Function to load in dataframe of only ddos dataflows from cleaned CSVs.
+    
+    Parameters:
+        sample_size : int, max number of rows to read in for each of the 11 attacks
+    '''
+    
+    # Read in benign dataset, nrows = 11 * sample_size
+    df = pd.read_csv(f'Datasets/{directory}/{directory}_Benign.csv', index_col=0, nrows=0)
+    
+    # Read a sample of each of 11 attack datasets, nrows = sample_size
+    for file in os.listdir(f'Datasets/{directory}/'):
+        if file[0] == '.':
+            pass
+        elif file == f'{directory}_Benign.csv':
+            pass
+        else:
+            try:
+                temp_df = pd.read_csv(f'Datasets/{directory}/{file}', index_col=0, nrows=sample_size)
+                df = pd.concat([df, temp_df])
+                # Add equal num of rows to benign size
+                benign_size += len(temp_df)
+                del temp_df
+            except:
+                pass
+    
+    # Reset index
+    df.reset_index(drop=True, inplace=True)
+    return df
+
+
+
+
+
+def load_benign_df(directory, sample_size=1000):
+    '''
+    Function to load in dataframe of only benign dataflows from cleaned CSV.
+    
+    Parameters:
+        sample_size : int, max number of rows to read in
+    '''
+    
+    # Read in benign dataset, nrows = 11 * sample_size
+    df = pd.read_csv(f'Datasets/{directory}/{directory}_Benign.csv', index_col=0, nrows=sample_size)
+    
+    # Reset index
+    df.reset_index(drop=True, inplace=True)
+    return df
+
+
+
+
+
+def load_balanced_df(directory, sample_size=1000):
     '''
     Function to load in balanced dataframe from cleaned CSVs.
     
     Parameters:
-        sample_size : int, number of rows to read in for each of the 18 attacks
+        sample_size : int, number of rows to read in for each of the 11 attacks
                       in addition to 11 * this amount of benign data flows.
                       Default value is 1000.
     '''
@@ -146,11 +200,9 @@ def load_balanced_df(directory='Final', sample_size=1000):
         else:
             try:
                 temp_df = pd.read_csv(f'Datasets/{directory}/{file}', index_col=0, nrows=sample_size)
-                if len(temp_df) < sample_size:
-                    benign_size += len(temp_df)
-                else:
-                    benign_size += sample_size
                 df = pd.concat([df, temp_df])
+                # Add equal num of rows to benign size
+                benign_size += len(temp_df)
                 del temp_df
             except:
                 pass
